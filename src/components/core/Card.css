@@ -1,0 +1,10 @@
+div.card {
+	width: fit-content;
+	padding: 10vw;
+	border-radius: 20px;
+	background-color: teal;
+}
+
+.card-header {
+	text-align: center;
+}
