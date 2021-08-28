@@ -17,6 +17,20 @@ const Login: React.FC<LoginProps> = ({}) => {
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 		console.log("Login submit", username, password, firstName, lastName);
+
+		const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/user`, {
+			method: "post",
+			mode: "cors",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				username: "asdf",
+				password: "pppppassssword",
+			}),
+		});
+
+		console.log(res);
 	};
 
 	return (
