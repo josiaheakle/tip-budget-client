@@ -25,8 +25,8 @@ const Login: React.FC<LoginProps> = ({}) => {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				username: "asdf",
-				password: "pppppassssword",
+				email: username,
+				password: password,
 			}),
 		});
 
