@@ -27,10 +27,14 @@ const Login: React.FC<LoginProps> = ({}) => {
 			body: JSON.stringify({
 				email: username,
 				password: password,
+				firstName: firstName,
+				lastName: lastName,
 			}),
 		});
 
-		console.log(res);
+		const body = await res.json();
+
+		console.log(body);
 	};
 
 	return (
