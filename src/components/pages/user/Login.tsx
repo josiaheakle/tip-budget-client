@@ -64,6 +64,7 @@ const Login: React.FC<LoginProps> = ({}) => {
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
+		clearErrors();
 		const res = await (isNewAccount ? fetchRegister() : fetchLogin());
 		console.log({ res });
 		if (res.valid) {
@@ -73,26 +74,28 @@ const Login: React.FC<LoginProps> = ({}) => {
 	};
 
 	const updateErrorMessages = (errors: { [index: string]: Array<string> }) => {
-		Object.keys(errors).forEach((error) => {
-			switch (error) {
-				case "password":
-					setPasswordErrors(errors[error]);
-					break;
-				case "passwordVerify":
-					setPasswordVerifyErrors(errors[error]);
-					break;
+		if (errors) {
+			Object.keys(errors).forEach((error) => {
+				switch (error) {
+					case "password":
+						setPasswordErrors(errors[error]);
+						break;
+					case "passwordVerify":
+						setPasswordVerifyErrors(errors[error]);
+						break;
 
-				case "firstName":
-					setFirstNameErrors(errors[error]);
-					break;
-				case "lastName":
-					setLastNameErrors(errors[error]);
-					break;
-				case "email":
-					setEmailErrors(errors[error]);
-					break;
-			}
-		});
+					case "firstName":
+						setFirstNameErrors(errors[error]);
+						break;
+					case "lastName":
+						setLastNameErrors(errors[error]);
+						break;
+					case "email":
+						setEmailErrors(errors[error]);
+						break;
+				}
+			});
+		}
 	};
 
 	const doesHaveErrors = (error: Array<string> | undefined): boolean => {
@@ -100,12 +103,16 @@ const Login: React.FC<LoginProps> = ({}) => {
 		else return error.length > 0;
 	};
 
-	React.useEffect(() => {
+	const clearErrors = () => {
 		setPasswordErrors([]);
 		setPasswordVerifyErrors([]);
 		setFirstNameErrors([]);
 		setLastNameErrors([]);
 		setEmailErrors([]);
+	};
+
+	React.useEffect(() => {
+		clearErrors();
 	}, [isNewAccount]);
 
 	return (
@@ -207,6 +214,7 @@ const Login: React.FC<LoginProps> = ({}) => {
 						>
 							{isNewAccount ? `Register` : `Login`}
 						</MUI.Button>
+
 						<MUI.Link
 							style={{ cursor: "pointer" }}
 							onClick={() => setIsNewAccount(!isNewAccount)}
