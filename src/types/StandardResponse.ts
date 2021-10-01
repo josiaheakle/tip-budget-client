@@ -1,10 +1,17 @@
-
-
-interface StandardResponse {
-    success: boolean;
-    message?: string;
-    errors?: {[index:string]:Array<string>};
-    data?: {[index:string]:any}
+interface ValidResponse {
+	valid: true;
+	data: { [index: string]: any };
 }
 
-export type {StandardResponse};
+interface InvalidResponse {
+	valid: false;
+	errors: ResponseErrors;
+}
+
+interface ResponseErrors {
+	[index: string]: Array<string>;
+}
+
+type StandardResponse = ValidResponse | InvalidResponse;
+
+export type { StandardResponse, ResponseErrors };

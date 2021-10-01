@@ -16,3 +16,7 @@ code {
 	display: flex;
 	flex-direction: column;
 }
+
+.space-bottom {
+	margin-bottom: 0.75rem !important;
+}
