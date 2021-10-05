@@ -43,7 +43,7 @@ const Login: React.FC<LoginProps> = ({}) => {
 		);
 		const body: StandardResponse = await res.json();
 
-		console.log(body);
+		console.log({ body });
 
 		if (password !== passwordVerify) {
 			if (body.valid === false) {
@@ -57,7 +57,7 @@ const Login: React.FC<LoginProps> = ({}) => {
 					},
 				};
 			}
-		} else console.log(`passwords match`);
+		}
 
 		return body;
 	};
@@ -66,8 +66,10 @@ const Login: React.FC<LoginProps> = ({}) => {
 		event.preventDefault();
 		clearErrors();
 		const res = await (isNewAccount ? fetchRegister() : fetchLogin());
-		console.log({ res });
 		if (res.valid) {
+			localStorage.setItem(`jwt`, res.data.token);
+
+			// jump to user logged in page
 		} else {
 			updateErrorMessages(res.errors);
 		}
@@ -135,93 +137,96 @@ const Login: React.FC<LoginProps> = ({}) => {
 					<MUI.CardHeader
 						title={<h3>{isNewAccount ? `Register` : `Login`}</h3>}
 					></MUI.CardHeader>
-					<MUI.CardContent
-						style={{
-							display: "flex",
-							flexDirection: "column",
-							alignItems: "center",
-							justifyContent: "space-between",
-						}}
-					>
-						{isNewAccount ? (
-							<>
-								<MUI.TextField
-									onChange={(e) => setFirstName(e.target.value)}
-									className="space-bottom"
-									label="First Name"
-									error={doesHaveErrors(firstNameErrors)}
-									helperText={
-										firstNameErrors ? (
-											<HelperText errors={firstNameErrors} />
-										) : null
-									}
-								></MUI.TextField>
-								<MUI.TextField
-									onChange={(e) => setLastName(e.target.value)}
-									className="space-bottom"
-									label="Last Name"
-									error={doesHaveErrors(lastNameErrors)}
-									helperText={
-										lastNameErrors ? (
-											<HelperText errors={lastNameErrors} />
-										) : null
-									}
-								></MUI.TextField>
-							</>
-						) : null}
-						<MUI.TextField
-							onChange={(e) => setEmail(e.target.value)}
-							className="space-bottom"
-							type="email"
-							label="Email"
-							error={doesHaveErrors(emailErrors)}
-							helperText={
-								emailErrors ? <HelperText errors={emailErrors} /> : null
-							}
-						></MUI.TextField>
-						<MUI.TextField
-							onChange={(e) => setPassword(e.target.value)}
-							className="space-bottom"
-							type="password"
-							label="Password"
-							error={doesHaveErrors(passwordErrors)}
-							helperText={
-								passwordErrors ? <HelperText errors={passwordErrors} /> : null
-							}
-						></MUI.TextField>
-						{isNewAccount ? (
-							<MUI.TextField
-								onChange={(e) => setPasswordVerify(e.target.value)}
-								className="space-bottom"
-								type="password"
-								label="Verify Password"
-								error={doesHaveErrors(passwordVerifyErrors)}
-								// helperText={passwordVerifyErrors ? passwordVerifyErrors : false}
-								helperText={
-									passwordVerifyErrors ? (
-										<HelperText errors={passwordVerifyErrors} />
-									) : null
-								}
-							></MUI.TextField>
-						) : null}
-						<MUI.Button
-							variant="contained"
-							className="space-bottom"
-							onClick={handleSubmit}
+					<MUI.CardContent>
+						<form
+							onSubmit={handleSubmit}
 							style={{
-								width: "fit-content",
+								display: "flex",
+								flexDirection: "column",
+								alignItems: "center",
+								justifyContent: "space-between",
 							}}
 						>
-							{isNewAccount ? `Register` : `Login`}
-						</MUI.Button>
+							{isNewAccount ? (
+								<>
+									<MUI.TextField
+										onChange={(e) => setFirstName(e.target.value)}
+										className="space-bottom"
+										label="First Name"
+										error={doesHaveErrors(firstNameErrors)}
+										helperText={
+											firstNameErrors ? (
+												<HelperText errors={firstNameErrors} />
+											) : null
+										}
+									></MUI.TextField>
+									<MUI.TextField
+										onChange={(e) => setLastName(e.target.value)}
+										className="space-bottom"
+										label="Last Name"
+										error={doesHaveErrors(lastNameErrors)}
+										helperText={
+											lastNameErrors ? (
+												<HelperText errors={lastNameErrors} />
+											) : null
+										}
+									></MUI.TextField>
+								</>
+							) : null}
+							<MUI.TextField
+								onChange={(e) => setEmail(e.target.value)}
+								className="space-bottom"
+								type="email"
+								label="Email"
+								error={doesHaveErrors(emailErrors)}
+								helperText={
+									emailErrors ? <HelperText errors={emailErrors} /> : null
+								}
+							></MUI.TextField>
+							<MUI.TextField
+								onChange={(e) => setPassword(e.target.value)}
+								className="space-bottom"
+								type="password"
+								label="Password"
+								error={doesHaveErrors(passwordErrors)}
+								helperText={
+									passwordErrors ? <HelperText errors={passwordErrors} /> : null
+								}
+							></MUI.TextField>
+							{isNewAccount ? (
+								<MUI.TextField
+									onChange={(e) => setPasswordVerify(e.target.value)}
+									className="space-bottom"
+									type="password"
+									label="Verify Password"
+									error={doesHaveErrors(passwordVerifyErrors)}
+									// helperText={passwordVerifyErrors ? passwordVerifyErrors : false}
+									helperText={
+										passwordVerifyErrors ? (
+											<HelperText errors={passwordVerifyErrors} />
+										) : null
+									}
+								></MUI.TextField>
+							) : null}
+							<MUI.Button
+								variant="contained"
+								className="space-bottom"
+								type="submit"
+								style={{
+									width: "fit-content",
+								}}
+							>
+								{isNewAccount ? `Register` : `Login`}
+							</MUI.Button>
 
-						<MUI.Link
-							style={{ cursor: "pointer" }}
-							onClick={() => setIsNewAccount(!isNewAccount)}
-						>
-							{isNewAccount ? `Use an existing account` : `Create an account`}
-						</MUI.Link>
-						{/* </MUI.Container> */}
+							<MUI.Link
+								style={{ cursor: "pointer" }}
+								onClick={() => setIsNewAccount(!isNewAccount)}
+							>
+								{isNewAccount ? `Use an existing account` : `Create an account`}
+							</MUI.Link>
+							{/* </MUI.Container> */}
+						</form>
 					</MUI.CardContent>
 				</MUI.Container>
 			</MUI.Card>
