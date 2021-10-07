@@ -10,13 +10,17 @@ const Login: React.FC<LoginProps> = ({}) => {
 
 	const [email, setEmail] = React.useState<string>();
 	const [emailErrors, setEmailErrors] = React.useState<Array<string>>();
+
 	const [password, setPassword] = React.useState<string>();
 	const [passwordErrors, setPasswordErrors] = React.useState<Array<string>>();
+
 	const [passwordVerify, setPasswordVerify] = React.useState<string>();
 	const [passwordVerifyErrors, setPasswordVerifyErrors] =
 		React.useState<Array<string>>();
+
 	const [firstName, setFirstName] = React.useState<string>();
 	const [firstNameErrors, setFirstNameErrors] = React.useState<Array<string>>();
+
 	const [lastName, setLastName] = React.useState<string>();
 	const [lastNameErrors, setLastNameErrors] = React.useState<Array<string>>();
 

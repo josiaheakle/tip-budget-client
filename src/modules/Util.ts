@@ -1,9 +1,9 @@
 export const Util = (() => {
-	const toUpper = (text: string): string => {
+	const toUpperFirst = (text: string): string => {
 		return `${text[0].toUpperCase()}${text.slice(1)}`;
 	};
 
 	return {
-		toUpper,
+		toUpperFirst,
 	};
 })();
