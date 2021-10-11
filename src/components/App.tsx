@@ -12,6 +12,7 @@ import { AppContext } from "./AppContext";
 // types
 import { User } from "../types/schemas";
 import { Dashboard } from "./pages/dashboard/Dashboard";
+import { ChecklistPage } from "./pages/checklists/ChecklistPage";
 
 function App() {
 	const [user, setUser] = React.useState<User | null>();
@@ -24,14 +25,18 @@ function App() {
 	}, []);
 
 	return (
-		<AppContext.Provider value={{ user: user }}>
+		<AppContext.Provider value={{ user: user, setUser: setUser }}>
 			<div
 				className="App"
 				style={{
 					backgroundColor: MUI.colors.lightBlue[50],
 				}}
 			>
-				{user === null ? <Login /> : <Dashboard />}
+				{user === undefined || user === null ? (
+					<Login setUser={setUser} />
+				) : (
+					<ChecklistPage user={user} />
+				)}
 			</div>
 		</AppContext.Provider>
 	);

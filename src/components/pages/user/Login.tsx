@@ -1,11 +1,20 @@
+// dependencies
 import * as React from "react";
 import * as MUI from "@mui/material";
-import { StandardResponse } from "../../../types/StandardResponse";
+
+// components
 import { HelperText } from "../../reusables/HelperText";
+import { RequestHandler } from "../../../modules/RequestHandler";
 
-interface LoginProps {}
+// types
+import { StandardResponse } from "../../../types/StandardResponse";
+import { User } from "../../../types/schemas/User";
 
-const Login: React.FC<LoginProps> = ({}) => {
+interface LoginProps {
+	setUser: (u: User) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ setUser }) => {
 	const [isNewAccount, setIsNewAccount] = React.useState(false);
 
 	const [email, setEmail] = React.useState<string>();
@@ -25,55 +34,42 @@ const Login: React.FC<LoginProps> = ({}) => {
 	const [lastNameErrors, setLastNameErrors] = React.useState<Array<string>>();
 
 	const fetchLogin = async (): Promise<StandardResponse> => {
-		return { valid: false, errors: {} };
+		const body = await RequestHandler.apiPost("/user/login", {
+			email: email,
+			password: password,
+		});
+		return body;
 	};
 
 	const fetchRegister = async (): Promise<StandardResponse> => {
-		const res = await fetch(
-			`${process.env.REACT_APP_SERVER_URL}/user/register`,
-			{
-				method: "post",
-				mode: "cors",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					email: email,
-					password: password,
-					firstName: firstName,
-					lastName: lastName,
-				}),
-			}
-		);
-		const body: StandardResponse = await res.json();
-
-		console.log({ body });
-
 		if (password !== passwordVerify) {
-			if (body.valid === false) {
-				body.errors["passwordVerify"] = [`Passwords must match.`];
-			} else {
-				console.log(`valid true`);
-				return {
-					valid: false,
-					errors: {
-						passwordVerify: ["Passwords must match."],
-					},
-				};
-			}
+			return {
+				valid: false,
+				errors: {
+					passwordVerify: ["Passwords must match."],
+				},
+			};
 		}
+
+		const body = await RequestHandler.apiPost("/user/register", {
+			email: email,
+			password: password,
+			firstName: firstName,
+			lastName: lastName,
+		});
 
 		return body;
 	};
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
+
 		clearErrors();
 		const res = await (isNewAccount ? fetchRegister() : fetchLogin());
+		// console.log({ res });
 		if (res.valid) {
 			localStorage.setItem(`jwt`, res.data.token);
-
-			// jump to user logged in page
+			setUser(res.data.user);
 		} else {
 			updateErrorMessages(res.errors);
 		}

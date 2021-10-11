@@ -26,7 +26,7 @@ export const UserHandler = (() => {
 	};
 
 	const loginWithToken = async (token: string): Promise<StandardResponse> => {
-		return await ReqHandler.apiPost("/user/token-login", { token: token });
+		return await ReqHandler.apiTokenPost("/user/token-login", {}, token);
 	};
 
 	return {
