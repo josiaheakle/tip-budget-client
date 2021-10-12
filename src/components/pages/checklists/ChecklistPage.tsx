@@ -10,6 +10,7 @@ import { UserHandler } from "../../../modules/UserHandler";
 import { Checklist } from "./Checklist";
 
 import { Checklist as ChecklistType } from "../../../types/schemas/Checklist";
+import { NewChecklistForm } from "./NewChecklistForm";
 
 interface ChecklistPageProps {
 	user: User;
@@ -50,7 +51,9 @@ const ChecklistPage: React.FC<ChecklistPageProps> = (props) => {
 				</MUI.Card>
 				<MUI.Card>
 					<MUI.CardHeader title="fuck you"></MUI.CardHeader>
-					<MUI.CardContent>i am the card content</MUI.CardContent>
+					<MUI.CardContent>
+						<NewChecklistForm />
+					</MUI.CardContent>
 				</MUI.Card>
 			</MUI.Container>
 		</MUI.Container>
